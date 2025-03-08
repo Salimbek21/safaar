@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
 import Header from "@/components/header";
@@ -20,10 +20,16 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
-export default function TourDetailPage({ params }: { params: { id: string } }) {
+export default function TourDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { user, isLoading } = useAuth();
   const router = useRouter();
-  const tour = tours.find((t) => t.id === params.id);
+  const { id } = use(params);
+
+  const tour = tours.find((t) => t.id === id);
   const [isWishlisted, setIsWishlisted] = useState(false);
 
   useEffect(() => {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { use, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
 import Header from "@/components/header";
@@ -24,11 +24,13 @@ import {
 export default function GuideDetailPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
   const { user, isLoading } = useAuth();
   const router = useRouter();
-  const guide = guides.find((g) => g.id === params.id);
+
+  const { id } = use(params);
+  const guide = guides.find((g) => g.id == id);
 
   useEffect(() => {
     if (!isLoading && !user) {
